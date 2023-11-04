@@ -1,4 +1,4 @@
-# .github/workflows/terraform.yml
+# .github/workflows/gc.yml
 
 name: Terraform Deployment
 
