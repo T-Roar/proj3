@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-static-website
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-static-website
+  template:
+    metadata:
+      labels:
+        app: my-static-website
+    spec:
+      containers:
+      - name: my-static-website
+        image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/static-website:latest
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "0.5"  # Limit to 0.5 CPU cores
+            memory: "512Mi"  # Limit to 512 megabytes of memory
+          requests:
+            cpu: "0.1"  # Initial request for CPU
+            memory: "256Mi"  # Initial request for memory

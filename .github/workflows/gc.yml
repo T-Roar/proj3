@@ -36,9 +36,20 @@ jobs:
 
     - name: Show GKE Cluster Information
       run: |
-        echo "Cluster Endpoint: ${{ steps.show_cluster.outputs.cluster_endpoint }}"
-        echo "Master Version: ${{ steps.show_cluster.outputs.cluster_master_version }}"
+        echo "Cluster Endpoint: ${{ steps.apply.outputs.cluster_endpoint }}"
+        echo "Master Version: ${{ steps.apply.outputs.cluster_master_version }}"
+    
+    # Additional steps for Docker build and GKE deployment
+    - name: Docker build and push to GCR
+      run: |
+        docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/static-website:latest .
+        echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | docker login -u _json_key --password-stdin https://gcr.io
+        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/static-website:latest
 
-    outputs:
-      cluster_endpoint: ${{ steps.apply.outputs.cluster_endpoint }}
-      cluster_master_version: ${{ steps.apply.outputs.cluster_master_version }}
+    - name: Configure kubectl
+      run: |
+        gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --region ${{ secrets.GKE_CLUSTER_REGION }}
+    - name: Deploy to GKE
+      run: |
+        kubectl apply -f k8s/deployment.yaml
+        kubectl apply -f k8s/service.yaml
