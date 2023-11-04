@@ -1,0 +1,36 @@
+# .github/workflows/terraform.yml
+
+name: Terraform Deployment
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.0.5
+
+    - name: Initialize Terraform
+      run: terraform init
+
+    - name: Apply Terraform changes
+      run: terraform apply -auto-approve
+
+    - name: Show GKE Cluster Information
+      run: |
+        echo "Cluster Endpoint: ${{ steps.show_cluster.outputs.cluster_endpoint }}"
+        echo "Master Version: ${{ steps.show_cluster.outputs.cluster_master_version }}"
+
+    outputs:
+      cluster_endpoint: ${{ steps.apply.outputs.cluster_endpoint }}
+      cluster_master_version: ${{ steps.apply.outputs.cluster_master_version }}
