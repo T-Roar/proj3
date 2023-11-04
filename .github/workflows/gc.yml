@@ -5,7 +5,7 @@ name: Terraform Deployment
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   terraform:
@@ -20,11 +20,19 @@ jobs:
       with:
         terraform_version: 1.0.5
 
+    - name: Authenticate with Google Cloud
+      run: |
+        echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} > key.json
+        gcloud auth activate-service-account --key-file=key.json
+
     - name: Initialize Terraform
       run: terraform init
 
+    - name: Plan Terraform changes
+      run: terraform plan -out=tfplan
+
     - name: Apply Terraform changes
-      run: terraform apply -auto-approve
+      run: terraform apply -auto-approve tfplan
 
     - name: Show GKE Cluster Information
       run: |
