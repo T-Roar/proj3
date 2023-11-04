@@ -6,11 +6,11 @@ resource "google_compute_network" "my_network" {
 
 # Create subnets using for_each
 resource "google_compute_subnetwork" "my_subnet" {
-  for_each          = { for i in range(var.subnet_count) : i => i }
-  name              = "subnet-${each.value}"
-  network           = google_compute_network.my_network.self_link
-  ip_cidr_range     = "10.0.${each.value}.0/24"
-  region            = "us-central1"
+  for_each      = { for i in range(var.subnet_count) : i => i }
+  name          = "subnet-${each.value}"
+  network       = google_compute_network.my_network.self_link
+  ip_cidr_range = "10.0.${each.value}.0/24"
+  region        = "us-central1"
 }
 
 # Create a firewall rule to allow incoming traffic
