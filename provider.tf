@@ -1,6 +1,6 @@
 provider "google" {
   credentials = jsonencode({
-    access_token = var.google_access_token
+    access_token = var.google_credentials
   })
   project     = var.project_id
   region      = var.region

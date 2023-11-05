@@ -17,6 +17,6 @@ variable "zone" {
   type = string
 }
 
-variable "google_access_token" {
+variable "google_credentials" {
   type = string
 }
