@@ -22,7 +22,7 @@ jobs:
       uses: google-github-actions/setup-gcloud@v0.3.0
       with:
         service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-        
+
     - name: Set Google Cloud environment variables
       run: |
         echo '{"type":"service_account","project_id":"'${{ secrets.GCP_PROJECT_ID }}'","private_key_id":"'${{ secrets.GCP_PRIVATE_KEY_ID }}'","private_key":"'${{ secrets.GCP_PRIVATE_KEY }}'","client_email":"'${{ secrets.GCP_CLIENT_EMAIL }}'","client_id":"'${{ secrets.GCP_CLIENT_ID }}'","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"'${{ secrets.GCP_AUTH_PROVIDER_X509_CERT_URL }}'","client_x509_cert_url":"'${{ secrets.GCP_CLIENT_X509_CERT_URL }}'"}' > key.json
@@ -47,7 +47,7 @@ jobs:
       run: |
         echo "Cluster Endpoint: ${{ steps.apply.outputs.cluster_endpoint }}"
         echo "Master Version: ${{ steps.apply.outputs.cluster_master_version }}"
-    
+
     - name: Docker build and push to GCR
       run: |
         docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/static-website:latest .
@@ -57,7 +57,7 @@ jobs:
     - name: Configure kubectl
       run: |
         gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --region ${{ secrets.GKE_CLUSTER_REGION }}
-        
+
     - name: Deploy to GKE
       run: |
         kubectl apply -f k8s/deployment.yaml
