@@ -1,11 +1,9 @@
-# .github/workflows/gc.yml
-
 name: Terraform Deployment
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   terraform:
@@ -21,11 +19,9 @@ jobs:
         terraform_version: 1.0.5
 
     - name: Authenticate with Google Cloud
-      run: |
-        echo "Secret value: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}"
-        echo -E "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > key.json
-        cat key.json
-        gcloud auth activate-service-account --key-file=key.json
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
     - name: Initialize Terraform
       run: terraform init
@@ -41,7 +37,6 @@ jobs:
         echo "Cluster Endpoint: ${{ steps.apply.outputs.cluster_endpoint }}"
         echo "Master Version: ${{ steps.apply.outputs.cluster_master_version }}"
     
-    # Additional steps for Docker build and GKE deployment
     - name: Docker build and push to GCR
       run: |
         docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/static-website:latest .
@@ -51,6 +46,7 @@ jobs:
     - name: Configure kubectl
       run: |
         gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} --region ${{ secrets.GKE_CLUSTER_REGION }}
+        
     - name: Deploy to GKE
       run: |
         kubectl apply -f k8s/deployment.yaml
