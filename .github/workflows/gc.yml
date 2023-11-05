@@ -13,15 +13,22 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Authenticate with Google Cloud
+      uses: google-github-actions/setup-gcloud@v0.3.0
+      with:
+        service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: 1.0.5
 
-    - name: Authenticate with Google Cloud
-      uses: google-github-actions/setup-gcloud@v0.3.0
-      with:
-        service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+    - name: Set Google Cloud environment variables
+      run: |
+        echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > key.json
+        gcloud auth activate-service-account --key-file=key.json
+        export GOOGLE_APPLICATION_CREDENTIALS=key.json
+        export GOOGLE_PROJECT=${{ secrets.GCP_PROJECT_ID }}
 
     - name: Initialize Terraform
       run: terraform init
