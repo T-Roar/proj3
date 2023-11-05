@@ -22,12 +22,8 @@ jobs:
 
     - name: Authenticate with Google Cloud
       run: |
-        echo "Secret value: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}"
-        echo -E "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > key.json
-        cat key.json
+        echo -n "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | base64 -d > key.json
         gcloud auth activate-service-account --key-file=key.json
-
-
 
     - name: Initialize Terraform
       run: terraform init
