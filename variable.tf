@@ -16,3 +16,7 @@ variable "region" {
 variable "zone" {
   type = string
 }
+
+variable "google_access_token" {
+  type = string
+}
