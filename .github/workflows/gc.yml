@@ -27,7 +27,7 @@ jobs:
       run: |
         echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > key.json
         gcloud auth activate-service-account --key-file=key.json
-        export GOOGLE_APPLICATION_CREDENTIALS=key.json
+        export GCP_SERVICE_ACCOUNT_KEY=key.json
         export GOOGLE_PROJECT=${{ secrets.GCP_PROJECT_ID }}
 
     - name: Initialize Terraform
