@@ -5,7 +5,7 @@ resource "google_compute_network" "roar_network" {
 }
 
 # Create subnets using for_each
-resource "google_compute_subnetwork" "my_subnet" {
+resource "google_compute_subnetwork" "roar_subnet" {
   for_each      = { for i in range(var.subnet_count) : i => i }
   name          = "subnet-${each.value}"
   network       = google_compute_network.roar_network.self_link
