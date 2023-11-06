@@ -17,3 +17,6 @@ google_credentials = [
 }
 JSON
 ]
+
+username = "admin"
+password = "Elephant123!"

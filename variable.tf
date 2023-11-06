@@ -20,3 +20,11 @@ variable "zone" {
 variable "google_credentials" {
   type = list(string)
 }
+
+variable "username" {
+  type = string
+}
+
+variable "password" {
+  type = string
+}
