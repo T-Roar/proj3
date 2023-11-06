@@ -11,14 +11,14 @@ resource "google_container_cluster" "roar_cluster" {
   node_locations    = ["us-east1-a", "us-east1-b", "us-east1-c"]
 
   # Node Pool Configuration
-  node_pool {
-    name             = "default-pool"
-    initial_node_count = 1
+#   node_pool {
+#     name             = "default-pool"
+#     initial_node_count = 1
     
-    node_config {
-      machine_type     = "n1-standard-1"  # Set your preferred machine type
-    }
-  }
+#     node_config {
+#       machine_type     = "n1-standard-1"  # Set your preferred machine type
+#     }
+#   }
 
   # Cluster Addons
   addons_config {
