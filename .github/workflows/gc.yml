@@ -125,6 +125,11 @@ jobs:
       env:
         DOCKER_BUILDKIT: 1
         COMPOSE_DOCKER_CLI_BUILD: 1
+  
+    - name: Print JSON key
+      run: |
+        echo "${{ secrets.GCR_JSON_KEY }}"
+
 
     - name: Configure kubectl
       run: |
