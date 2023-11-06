@@ -1,7 +1,7 @@
 gcp_region = "us-east1"
 zone       = "us-east1-b"
 gcp_project_id = "roar1984"
-google_credential =  <<JSON
+google_credentials = <<JSON
 {
   "type": "service_account",
   "project_id": "roar1984",

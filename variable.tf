@@ -17,6 +17,6 @@ variable "zone" {
   type = string
 }
 
-variable "google_credential" {
+variable "google_credentials" {
   type = list(string)
 }
