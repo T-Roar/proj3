@@ -8,7 +8,17 @@ resource "google_container_cluster" "roar_cluster" {
 
   # Cluster Configuration
   initial_node_count = 1
-  node_locations    = ["us-east1-a", "us-east1-b", "us-east1-c"]
+  node_locations    = ["us-central1-a", "us-central1-b", "us-central1-c"]
+
+  # Node Pool Configuration
+  node_pool {
+    name             = "default-pool"
+    initial_node_count = 1
+    
+    node_config {
+      machine_type     = "n1-standard-1"  # Set your preferred machine type
+    }
+  }
 
   # Cluster Addons
   addons_config {
@@ -28,10 +38,38 @@ resource "google_container_cluster" "roar_cluster" {
   node_pool {
     name             = "autoscaling-pool"
     initial_node_count = 2
+
+    node_config {
+      machine_type     = "n1-standard-2"
+    }
+
     autoscaling {
       min_node_count = 1
       max_node_count = 3
     }
   }
-  
+
+  # Master Authentication
+#   master_auth {
+#     username = "admin"  # Set your desired username or leave it as "admin"
+#     password = "Password"  # Set your desired password or leave it empty for auto-generated
+#     client_certificate_config {
+#       issue_client_certificate = false
+#     }
+#   }
+
+  # Node Pool Management
+  node_pool {
+    name             = "management-pool"
+    initial_node_count = 1
+
+    node_config {
+      machine_type     = "n1-standard-1"  # Set your preferred machine type
+    }
+
+    management {
+      auto_repair  = true
+      auto_upgrade = true
+    }
+  }
 }
