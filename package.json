@@ -4,7 +4,7 @@
   "description": "static website",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "start": "node index.js"
   },
   "author": "C.C. Dennar",
   "license": "ISC",
