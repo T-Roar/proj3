@@ -8,7 +8,7 @@ resource "google_container_cluster" "roar_cluster" {
 
   # Cluster Configuration
   initial_node_count = 1
-  node_locations    = ["us-central1-a", "us-central1-b", "us-central1-c"]
+  node_locations    = ["us-east1-a", "us-east1-b", "us-east1-c"]
 
   # Cluster Addons
   addons_config {
