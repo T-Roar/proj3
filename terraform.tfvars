@@ -1,7 +1,8 @@
 gcp_region = "us-east1"
 zone       = "us-east1-b"
 gcp_project_id = "roar1984"
-google_credentials = <<JSON
+google_credentials = [
+  <<JSON
 {
   "type": "service_account",
   "project_id": "roar1984",
@@ -15,3 +16,4 @@ google_credentials = <<JSON
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/sniffer%40roar1984.iam.gserviceaccount.com"
 }
 JSON
+]
