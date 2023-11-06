@@ -1,5 +1,5 @@
 provider "google" {
-  credentials = jsondecode(var.google_credentials)
-  project     = var.project_id
-  region      = var.region
+  credentials = file("${path.module}/terraform/key.json")
+  project     = var.gcp_project_id
+  region      = var.gcp_region
 }
