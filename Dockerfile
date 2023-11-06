@@ -8,16 +8,13 @@ RUN npm install
 
 COPY . .
 
-# Build the website
-RUN npm run build
-
 # Stage 2: Create a minimal production image
 FROM nginx:alpine
 
 WORKDIR /usr/share/nginx/html
 
 # Copy the built website from the previous stage
-COPY --from=builder /app/build .
+COPY --from=builder /app .
 
 # Expose the default port
 EXPOSE 80

@@ -4,7 +4,8 @@
   "description": "static website",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "echo 'Building the website...'"
   },
   "author": "C.C. Dennar",
   "license": "ISC",
