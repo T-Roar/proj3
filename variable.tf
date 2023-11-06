@@ -28,3 +28,8 @@ variable "username" {
 variable "password" {
   type = string
 }
+
+variable "initial_node_count" {
+  description = "The number of nodes to create in this cluster"
+  default     = 1
+}
