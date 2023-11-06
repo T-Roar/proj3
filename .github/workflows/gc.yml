@@ -1,4 +1,4 @@
-#  proj3
+# proj3
 
 name: Terraform Deployment
 
@@ -15,6 +15,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Decode Service Account Key
+      run: echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | base64 --decode > key.json
+
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v1
       with:
@@ -27,12 +30,10 @@ jobs:
 
     - name: Set Google Cloud environment variables
       run: |
-        echo '{"type":"service_account","project_id":"'${{ secrets.GCP_PROJECT_ID }}'","private_key_id":"'${{ secrets.GCP_PRIVATE_KEY_ID }}'","private_key":"'${{ secrets.GCP_PRIVATE_KEY }}'","client_email":"'${{ secrets.GCP_CLIENT_EMAIL }}'","client_id":"'${{ secrets.GCP_CLIENT_ID }}'","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"'${{ secrets.GCP_AUTH_PROVIDER_X509_CERT_URL }}'","client_x509_cert_url":"'${{ secrets.GCP_CLIENT_X509_CERT_URL }}'"}' > key.json
         gcloud auth activate-service-account --key-file=key.json
         export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/key.json
         export GOOGLE_PROJECT=${{ secrets.GCP_PROJECT_ID }}
         export GOOGLE_ACCESS_TOKEN=$(gcloud auth print-access-token)
-
 
     - name: Initialize Terraform
       run: |
@@ -53,8 +54,10 @@ jobs:
     - name: Docker build and push to GCR
       run: |
         docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/static-website:latest .
-        echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | docker login -u _json_key --password-stdin https://gcr.io
+        docker login -u _json_key --password-stdin https://gcr.io < key.json
         docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/static-website:latest
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS: key.json
 
     - name: Configure kubectl
       run: |
