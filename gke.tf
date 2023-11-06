@@ -1,15 +1,15 @@
-resource "google_container_cluster" "primary" {
-  name     = "my-gke-cluster"
+resource "google_container_cluster" "roar_cluster" {
+  name     = "roar-cluster"
   location = var.gcp_region
   initial_node_count       = var.initial_node_count
   remove_default_node_pool = true
   network                  = "default"
 }
 
-resource "google_container_node_pool" "primary_nodes" {
+resource "google_container_node_pool" "roar_nodes" {
   name       = "my-node-pool"
   location   = var.gcp_region
-  cluster    = google_container_cluster.primary.name
+  cluster    = google_container_cluster.roar_cluster.name
   node_count = var.initial_node_count
 
   node_config {
